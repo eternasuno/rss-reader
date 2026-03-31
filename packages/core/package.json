@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "purescript": "^0.15.16",
+    "purs-tidy": "^0.11.1",
+    "spago": "^1.0.4"
+  },
+  "name": "core",
+  "scripts": {
+    "build": "spago build",
+    "check": " purs-tidy check src/**/*.purs test/**/*.purs",
+    "run": "spago run",
+    "test": "spago test"
+  },
+  "type": "module"
+}

@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+  - apps/*
+
+allowBuilds:
+  cpu-features: true
+  purescript: true
+  ssh2: true

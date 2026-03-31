@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "@biomejs/biome": "2.3.11",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": "^24.0.0"
+  },
+  "name": "rss-reader",
+  "packageManager": "pnpm@10.33.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "check": "turbo run check",
+    "test": "turbo run test"
+  }
+}

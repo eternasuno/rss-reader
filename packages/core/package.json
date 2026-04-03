@@ -1,12 +1,9 @@
 {
-  "devDependencies": {
-    "purescript": "^0.15.16",
-    "purs-tidy": "^0.11.1",
-    "spago": "^1.0.4"
-  },
+  "main": "./dist/index.js",
   "name": "core",
   "scripts": {
     "build": "spago build",
+    "bundle": "spago bundle --bundle-type module --module Core  --outfile ./dist/index.js",
     "check": " purs-tidy check src/**/*.purs test/**/*.purs",
     "run": "spago run",
     "test": "spago test"

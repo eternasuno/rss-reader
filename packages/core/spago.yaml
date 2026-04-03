@@ -7,7 +7,3 @@ package:
   test:
     main: Test.Main
     dependencies: []
-workspace:
-  packageSet:
-    registry: 75.4.0
-  extraPackages: {}

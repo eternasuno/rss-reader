@@ -57,6 +57,8 @@
         },
         "js/ts.preferences.importModuleSpecifier": "non-relative",
         "js/ts.tsdk.path": "node_modules/typescript/lib",
+        "purescript.addNpmPath": true,
+        "purescript.addSpagoSources": true,
         "search.exclude": {
           "**/.spago/**": true,
           "**/*.code-search": true,

@@ -4,7 +4,7 @@
 
 - Files and directories: use kebab-case (for example, `user-service/`, `get-auth-token.ts`).
 - Identifiers: use `camelCase` for variables and functions, `PascalCase` for type names.
-- Directory-level unified exports: avoid `index.ts`; use a file named after the directory instead (for example, `user-service/user-service.ts`).
+- Directory-level unified exports: avoid `index.ts`; use a outside file named after the directory instead.
 
 ---
 

@@ -67,7 +67,10 @@ rss-reader/
 ├── pnpm-workspace.yaml
 ├── spago.yaml
 ├── turbo.json
-├── packages/
+├── spec/
+├── apps/
+├── purescript/
+│   ├── spago.yaml
 │   ├── core/
 │   ├── adapter-fetch/
 │   ├── glue-web/
@@ -81,8 +84,8 @@ Layer responsibilities:
 
 | Layer | Primary Responsibility | Allowed Dependencies | Forbidden Dependencies |
 |---|---|---|---|
-| Core (`packages/core`) | Domain entities, ports, use cases | PureScript libraries and domain modules | Framework/runtime-specific adapters, FFI |
-| Glue (`packages/glue-web`, `packages/glue-server`) | Run interpreters and boundary translation | Core + platform impl/adapters | UI/network framework business logic |
+| Core (`purescript/core`) | Domain entities, ports, use cases | PureScript libraries and domain modules | Framework/runtime-specific adapters, FFI |
+| Glue (`purescript/glue-web`, `purescript/glue-server`) | Run interpreters and boundary translation | Core + platform impl/adapters | UI/network framework business logic |
 | Apps (`apps/web`, `apps/server`) | Delivery and transport orchestration | Glue package exports | Direct dependency on Core internals |
 
 Core module boundary contract:

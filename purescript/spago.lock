@@ -2,7 +2,7 @@
   "workspace": {
     "packages": {
       "core": {
-        "path": "packages/core",
+        "path": "core",
         "core": {
           "dependencies": [
             "console",

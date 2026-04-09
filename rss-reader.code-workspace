@@ -1,3 +1,25 @@
 {
-  "folders": [{ "name": "root", "path": "." }, { "name": "purescript", "path": "purescript" }]
+	"folders": [
+		{
+			"name": "root",
+			"path": "."
+		},
+		{
+			"name": "core",
+			"path": "core"
+		},
+		{
+			"name": "web",
+			"path": "web"
+		},
+		{
+			"name": "server",
+			"path": "server"
+		}
+	],
+	"settings": {
+		"biome.enabled": false,
+		"purescript.addNpmPath": true,
+		"purescript.addSpagoSources": true
+	}
 }

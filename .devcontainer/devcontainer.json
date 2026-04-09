@@ -55,8 +55,6 @@
           "**/.hg/store/**": true,
           "**/.spago/**": true
         },
-        "js/ts.preferences.importModuleSpecifier": "non-relative",
-        "js/ts.tsdk.path": "node_modules/typescript/lib",
         "search.exclude": {
           "**/.spago/**": true,
           "**/*.code-search": true,

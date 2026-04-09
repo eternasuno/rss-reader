@@ -1,0 +1,19 @@
+package:
+  name: core
+  dependencies:
+    - console
+    - datetime
+    - effect
+    - node-url
+    - prelude
+    - run
+  test:
+    main: Test.Main
+    dependencies: 
+      - spec
+      - spec-node
+      - spec-discovery
+workspace:
+  packageSet:
+    registry: 75.8.0
+  extraPackages: {}

@@ -7,11 +7,10 @@
   "exports": {
     "./core": "./output/Core/index.js"
   },
-  "name": "purescript",
+  "name": "core",
   "scripts": {
     "build": "spago build",
-    "check": " purs-tidy check src/**/*.purs test/**/*.purs",
-    "run": "spago run",
+    "check": "purs-tidy check src/**/*.purs test/**/*.purs",
     "test": "spago test"
   },
   "type": "module"

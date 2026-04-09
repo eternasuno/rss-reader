@@ -149,5 +149,6 @@ generated-docs/
 .purs*
 .psa*
 .spago
+.purs-repl
 
 .turbo

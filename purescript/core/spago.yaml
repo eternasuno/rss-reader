@@ -1,9 +1,0 @@
-package:
-  name: core
-  dependencies:
-    - console
-    - effect
-    - prelude
-  test:
-    main: Test.Main
-    dependencies: []

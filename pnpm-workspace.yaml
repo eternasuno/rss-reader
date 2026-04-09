@@ -1,6 +1,7 @@
 packages:
-  - purescript
-  - apps/*
+  - core
+  - web
+  - server
 
 allowBuilds:
   cpu-features: true

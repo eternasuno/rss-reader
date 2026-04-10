@@ -59,7 +59,8 @@
           "**/.spago/**": true,
           "**/*.code-search": true,
           "**/bower_components": true,
-          "**/node_modules": true
+          "**/node_modules": true,
+          "**/output": true,
         }
       }
     }

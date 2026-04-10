@@ -1,15 +1,16 @@
 package:
   name: core
   dependencies:
+    - argonaut-core
+    - codec-argonaut
     - console
     - datetime
     - effect
-    - node-url
     - prelude
     - run
   test:
     main: Test.Main
-    dependencies: 
+    dependencies:
       - spec
       - spec-node
       - spec-discovery

@@ -13,7 +13,8 @@
       "settings": {
         "[javascript]": {
           "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit"
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit"
           },
           "editor.defaultFormatter": "biomejs.biome"
         },
@@ -42,7 +43,8 @@
         },
         "[typescript]": {
           "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit"
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit"
           },
           "editor.defaultFormatter": "biomejs.biome"
         },
@@ -60,7 +62,7 @@
           "**/*.code-search": true,
           "**/bower_components": true,
           "**/node_modules": true,
-          "**/output": true,
+          "**/output": true
         }
       }
     }

@@ -1,15 +1,24 @@
 {
-	"$schema": "./node_modules/turbo/schema.json",
-	"tasks": {
-		"build": {
-			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
-		},
-		"check": {
-			"dependsOn": ["^check"]
-		},
-		"test": {
-			"dependsOn": ["^test"]
-		}
-	}
+  "$schema": "./node_modules/turbo/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["output/**"]
+    },
+    "check": {
+      "dependsOn": ["^check"]
+    },
+    "db:push": {
+      "cache": false,
+      "interactive": true
+    },
+    "db:studio": {
+      "cache": false,
+      "interactive": true,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    }
+  }
 }

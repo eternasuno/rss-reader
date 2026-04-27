@@ -1,10 +1,9 @@
 module Usecase.Pure.Identify where
 
-import Entity.Article (ArticleId(..), ArticleUrl(..))
+import Entity.Article (ArticleId(..))
+import Entity.ValueObject (URL(..))
 
 foreign import sha256HexImpl :: String -> String
 
-deriveArticleId :: ArticleUrl -> ArticleId
-deriveArticleId (ArticleUrl cleanUrl) = ArticleId hashHex
-  where
-  hashHex = sha256HexImpl cleanUrl
+deriveArticleId :: URL -> ArticleId
+deriveArticleId (URL url) = ArticleId (sha256HexImpl url)

@@ -9,8 +9,7 @@
       "dependsOn": ["^check"]
     },
     "db:push": {
-      "cache": false,
-      "interactive": true
+      "cache": false
     },
     "db:studio": {
       "cache": false,
@@ -20,5 +19,6 @@
     "test": {
       "dependsOn": ["^test"]
     }
-  }
+  },
+  "ui": "tui"
 }

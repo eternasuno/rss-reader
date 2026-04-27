@@ -14,7 +14,7 @@ export const extractAutoImpl = (htmlString) => {
     return {
       content: article.content,
       description: article.excerpt,
-      pubDate: article.publishedTime,
+      pubDate: article.publishedTime ?? new Date().toISOString(),
       title: article.title || 'Untitled',
     };
   } catch {
@@ -31,7 +31,9 @@ export const extractCSSSelectorImpl = (selectors) => (htmlString) => {
     return {
       content: $content.html(),
       description: selectors.description ? $(selectors.description).text().trim() : null,
-      pubDate: selectors.publishedAt ? $(selectors.publishedAt).text().trim() : null,
+      pubDate: selectors.publishedAt
+        ? $(selectors.publishedAt).text().trim()
+        : new Date().toISOString(),
       title: selectors.title ? $(selectors.title).text().trim() : 'Untitled',
     };
   } catch {

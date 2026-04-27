@@ -2,35 +2,30 @@ module Entity.Article where
 
 import Data.DateTime (DateTime)
 import Data.Maybe (Maybe)
-import Entity.Feed (FeedId)
-import Entity.ValueObject (ExtractionStrategy)
+import Data.Newtype (class Newtype)
+import Entity.ValueObject (ExtractionStrategy, URL)
 
 newtype ArticleId = ArticleId String
 
-newtype ArticleUrl = ArticleUrl String
-
-data ReadStatus = Unread | Read
-
-data StarStatus = Unstarred | Starred
+derive instance newtypeArticleId :: Newtype ArticleId _
 
 type ArticleState =
-  { read :: ReadStatus
-  , star :: StarStatus
+  { read :: Boolean
+  , starred :: Boolean
   }
 
 type ArticlePayload =
   { title :: String
   , description :: Maybe String
   , content :: Maybe String
-  , pubDate :: Maybe DateTime
+  , pubDate :: DateTime
   }
 
 type Article =
   { id :: ArticleId
-  , feedId :: Maybe FeedId
-  , url :: ArticleUrl
+  , url :: URL
   , payload :: ArticlePayload
   , state :: ArticleState
-  , savedAt :: DateTime
   , extractionStrategy :: ExtractionStrategy
+  , savedAt :: DateTime
   }

@@ -12,7 +12,7 @@ import Port.AppError (AppError(..))
 import Usecase.Pure.Codecs (articlePayloadCodec, cssSelectorCodec)
 
 mapExtractError ∷ forall f a b. Bifunctor f ⇒ f a b → f AppError b
-mapExtractError = lmap (\_ -> ExtractError)
+mapExtractError = lmap (const ExtractError)
 
 foreign import extractAutoImpl :: String -> Json
 

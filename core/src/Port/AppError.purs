@@ -6,3 +6,4 @@ data AppError
   | NotFound
   | ExtractError
   | ExistError
+  | RepositoryError

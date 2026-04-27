@@ -12,6 +12,8 @@
   "scripts": {
     "build": "turbo run build",
     "check": "turbo run check",
+    "db:push": "turbo run db:push",
+    "db:studio": "turbo run db:studio",
     "test": "turbo run test"
   }
 }

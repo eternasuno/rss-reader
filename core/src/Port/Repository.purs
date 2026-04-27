@@ -2,24 +2,33 @@ module Port.Repository where
 
 import Prelude
 
-import Data.DateTime (DateTime)
+import Data.Either (Either)
 import Data.Maybe (Maybe)
-import Entity.Article (Article, ArticleId, ArticleState)
-import Entity.Feed (Feed, FeedId)
+import Entity.Article (Article, ArticleId)
+import Port.AppError (AppError)
 import Run (Run)
 import Run as Run
 import Type.Proxy (Proxy(..))
 
+data ArticleSortOption = SortByPubDateDesc | SortByPubDateAsc
+
+instance showArticleSortOption :: Show ArticleSortOption where
+  show SortByPubDateDesc = "pub_date_desc"
+  show SortByPubDateAsc = "pub_date_asc"
+
+type ArticleQuery =
+  { read :: Maybe Boolean
+  , start :: Maybe Boolean
+  , sortBy :: ArticleSortOption
+  }
+
 data RepositoryF a
-  = SaveFeed Feed a
-  | DeleteFeed FeedId a
-  | GetFeed FeedId (Maybe Feed -> a)
-  | GetActiveFeeds DateTime (Array Feed -> a)
-  | SaveArticles (Array Article) a
+  = SaveArticles (Array Article) (Either AppError Unit -> a)
+  | RemoveArticles (Array ArticleId) (Either AppError Unit -> a)
+  | UpdateArticleStarred Boolean ArticleId (Either AppError Unit -> a)
+  | UpdateArticleRead Boolean ArticleId (Either AppError Unit -> a)
   | GetArticle ArticleId (Maybe Article -> a)
-  | GetArticlesByFeed FeedId (Array Article -> a)
-  | UpdateArticleState ArticleId ArticleState a
-  | DeleteOldArticles FeedId Int a
+  | QueryArticles ArticleQuery (Array Article -> a)
 
 derive instance functorRepositoryF :: Functor RepositoryF
 
@@ -28,31 +37,22 @@ type REPOSITORY r = (repository :: RepositoryF | r)
 liftRepo :: forall r a. RepositoryF a -> Run (REPOSITORY r) a
 liftRepo = Run.lift (Proxy :: Proxy "repository")
 
-saveFeed :: forall r. Feed -> Run (REPOSITORY r) Unit
-saveFeed feed = liftRepo (SaveFeed feed unit)
+saveArticles :: forall r. Array Article -> Run (REPOSITORY r) (Either AppError Unit)
+saveArticles articles = liftRepo (SaveArticles articles identity)
 
-deleteFeed :: forall r. FeedId -> Run (REPOSITORY r) Unit
-deleteFeed feedId = liftRepo (DeleteFeed feedId unit)
+removeArticles :: forall r. Array ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
+removeArticles articleIds = liftRepo (RemoveArticles articleIds identity)
 
-getFeed :: forall r. FeedId -> Run (REPOSITORY r) (Maybe Feed)
-getFeed feedId = liftRepo (GetFeed feedId identity)
+updateArticleStarred :: forall r. Boolean -> ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
+updateArticleStarred starred articleId =
+  liftRepo (UpdateArticleStarred starred articleId identity)
 
-getActiveFeeds :: forall r. DateTime -> Run (REPOSITORY r) (Array Feed)
-getActiveFeeds currentTime = liftRepo (GetActiveFeeds currentTime identity)
-
-saveArticles :: forall r. Array Article -> Run (REPOSITORY r) Unit
-saveArticles articles = liftRepo (SaveArticles articles unit)
+updateArticleRead :: forall r. Boolean -> ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
+updateArticleRead read articleId =
+  liftRepo (UpdateArticleRead read articleId identity)
 
 getArticle :: forall r. ArticleId -> Run (REPOSITORY r) (Maybe Article)
 getArticle articleId = liftRepo (GetArticle articleId identity)
 
-getArticlesByFeed :: forall r. FeedId -> Run (REPOSITORY r) (Array Article)
-getArticlesByFeed feedId = liftRepo (GetArticlesByFeed feedId identity)
-
-updateArticleState :: forall r. ArticleId -> ArticleState -> Run (REPOSITORY r) Unit
-updateArticleState articleId articleState =
-  liftRepo (UpdateArticleState articleId articleState unit)
-
-deleteOldArticles :: forall r. FeedId -> Int -> Run (REPOSITORY r) Unit
-deleteOldArticles feedId retentionLimit =
-  liftRepo (DeleteOldArticles feedId retentionLimit unit)
+queryArticles :: forall r. ArticleQuery -> Run (REPOSITORY r) (Array Article)
+queryArticles articleQuery = liftRepo (QueryArticles articleQuery identity)

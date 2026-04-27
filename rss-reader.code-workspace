@@ -18,6 +18,7 @@
     }
   ],
   "settings": {
+    "biome.enabled": false,
     "purescript.addNpmPath": true,
     "purescript.addSpagoSources": true
   }

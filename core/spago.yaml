@@ -1,6 +1,7 @@
 package:
   name: core
   dependencies:
+    - aff-promise
     - argonaut-core
     - codec-argonaut
     - console
@@ -8,6 +9,7 @@ package:
     - effect
     - prelude
     - run
+    - transformers
   test:
     main: Test.Main
     dependencies:

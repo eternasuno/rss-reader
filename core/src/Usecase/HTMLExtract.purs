@@ -1,4 +1,4 @@
-module Usecase.Pure.HTMLParse where
+module Usecase.HTMLExtract where
 
 import Prelude
 
@@ -9,10 +9,10 @@ import Data.Either (Either)
 import Entity.Article (ArticlePayload)
 import Entity.ValueObject (CSSSelector, ExtractionStrategy(..))
 import Port.AppError (AppError(..))
-import Usecase.Pure.Codecs (articlePayloadCodec, cssSelectorCodec)
+import Usecase.Codecs (articlePayloadCodec, cssSelectorCodec)
 
 mapExtractError ∷ forall f a b. Bifunctor f ⇒ f a b → f AppError b
-mapExtractError = lmap (const ExtractError)
+mapExtractError = lmap (const (ExtractError "failed to extract article from HTML"))
 
 foreign import extractAutoImpl :: String -> Json
 

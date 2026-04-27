@@ -12,10 +12,11 @@ import Data.Maybe (Maybe)
 import Data.Newtype (unwrap)
 import Data.Nullable (Nullable, toMaybe)
 import Effect.Aff (Aff, try)
+import Effect.Exception (message)
 import Entity.Article (Article, ArticleId)
 import Port.AppError (AppError(..))
 import Port.Repository (ArticleQuery, RepositoryF(..))
-import Usecase.Pure.Codecs (articleCodec, articleQueryCodec)
+import Usecase.Codecs (articleCodec, articleQueryCodec)
 
 foreign import saveArticlesImpl :: Array Json -> Promise Unit
 foreign import removeArticlesImpl :: Array String -> Promise Unit
@@ -25,7 +26,7 @@ foreign import getArticleImpl :: String -> Promise (Nullable Json)
 foreign import queryArticlesImpl :: Json -> Promise (Array Json)
 
 toAff' :: forall a. Promise a -> Aff (Either AppError a)
-toAff' promise = lmap (const RepositoryError) <$> try (toAff promise)
+toAff' promise = lmap (RepositoryError <<< message) <$> try (toAff promise)
 
 decodeArticle :: Json -> Maybe Article
 decodeArticle = hush <<< CA.decode articleCodec

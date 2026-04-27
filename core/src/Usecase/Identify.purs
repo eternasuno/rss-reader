@@ -1,4 +1,4 @@
-module Usecase.Pure.Identify where
+module Usecase.Identify where
 
 import Entity.Article (ArticleId(..))
 import Entity.ValueObject (URL(..))

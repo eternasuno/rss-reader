@@ -1,4 +1,4 @@
-module Server.Adapter.Time where
+module Adapter.Time where
 
 import Prelude
 

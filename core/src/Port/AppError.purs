@@ -1,9 +1,12 @@
 module Port.AppError where
 
+import Entity.Article (ArticleId)
+import Entity.ValueObject (URL)
+
 data AppError
-  = NetworkError
-  | ParseError
-  | NotFound
-  | ExtractError
-  | ExistError
-  | RepositoryError
+  = NetworkError URL String
+  | ParseError String
+  | NotFound String
+  | ExtractError String
+  | ExistError ArticleId
+  | RepositoryError String

@@ -26,14 +26,14 @@ export const extractCSSSelectorImpl = (selectors) => (htmlString) => {
   try {
     const $ = load(htmlString);
     const $content = $(selectors.content);
-    if ($content.length === 0) return null;
+    if ($content.length === 0) {
+      return null;
+    }
 
     return {
       content: $content.html(),
       description: selectors.description ? $(selectors.description).text().trim() : null,
-      pubDate: selectors.publishedAt
-        ? $(selectors.publishedAt).text().trim()
-        : new Date().toISOString(),
+      pubDate: selectors.pubDate ? $(selectors.pubDate).text().trim() : new Date().toISOString(),
       title: selectors.title ? $(selectors.title).text().trim() : 'Untitled',
     };
   } catch {

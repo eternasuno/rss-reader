@@ -41,8 +41,8 @@ export const queryArticlesImpl = async (articleQuery) => {
     filters.push(eq(articles.read, articleQuery.read));
   }
 
-  if (articleQuery.start !== null && articleQuery.start !== undefined) {
-    filters.push(eq(articles.starred, articleQuery.start));
+  if (articleQuery.starred !== null && articleQuery.starred !== undefined) {
+    filters.push(eq(articles.starred, articleQuery.starred));
   }
 
   const orderByPubDate =

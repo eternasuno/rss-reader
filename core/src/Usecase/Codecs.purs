@@ -1,4 +1,4 @@
-module Usecase.Pure.Codecs where
+module Usecase.Codecs where
 
 import Prelude
 
@@ -39,18 +39,18 @@ dateTimeCodec = CA.prismaticCodec "DateTime" parseDateTime formatDateTime CA.str
 
 articlePayloadCodec :: CA.JsonCodec ArticlePayload
 articlePayloadCodec = CA.object "ArticlePayload" $ CAR.record
-  { title: CA.string
-  , content: CAR.optional CA.string
+  { content: CAR.optional CA.string
   , description: CAR.optional CA.string
   , pubDate: dateTimeCodec
+  , title: CA.string
   }
 
 cssSelectorCodec :: CA.JsonCodec CSSSelector
 cssSelectorCodec = CA.object "CSSSelector" $ CAR.record
-  { title: CAR.optional CA.string
+  { content: CA.string
   , description: CAR.optional CA.string
-  , content: CA.string
   , pubDate: CAR.optional CA.string
+  , title: CAR.optional CA.string
   }
 
 extractionStrategyCodec :: CA.JsonCodec ExtractionStrategy
@@ -122,16 +122,16 @@ toArticle schema =
 
 fromArticle :: Article -> ArticleDBSchema
 fromArticle article =
-  { id: article.id
-  , url: article.url
-  , title: article.payload.title
+  { content: article.payload.content
   , description: article.payload.description
-  , content: article.payload.content
+  , extras: { extractionStrategy: article.extractionStrategy }
+  , id: article.id
   , pubDate: article.payload.pubDate
   , read: article.state.read
-  , starred: article.state.starred
   , savedAt: article.savedAt
-  , extras: { extractionStrategy: article.extractionStrategy }
+  , starred: article.state.starred
+  , title: article.payload.title
+  , url: article.url
   }
 
 articleCodec :: CA.JsonCodec Article
@@ -149,6 +149,6 @@ articleSortOptionCodec = CA.prismaticCodec "ArticleSortOption" decode encode CA.
 articleQueryCodec :: CA.JsonCodec ArticleQuery
 articleQueryCodec = CA.object "ArticleQuery" $ CAR.record
   { read: CAR.optional CA.boolean
-  , start: CAR.optional CA.boolean
+  , starred: CAR.optional CA.boolean
   , sortBy: articleSortOptionCodec
   }

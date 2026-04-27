@@ -15,17 +15,17 @@ type ArticleState =
   }
 
 type ArticlePayload =
-  { title :: String
+  { content :: Maybe String
   , description :: Maybe String
-  , content :: Maybe String
   , pubDate :: DateTime
+  , title :: String
   }
 
 type Article =
-  { id :: ArticleId
-  , url :: URL
+  { extractionStrategy :: ExtractionStrategy
+  , id :: ArticleId
   , payload :: ArticlePayload
-  , state :: ArticleState
-  , extractionStrategy :: ExtractionStrategy
   , savedAt :: DateTime
+  , state :: ArticleState
+  , url :: URL
   }

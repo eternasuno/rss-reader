@@ -32,9 +32,9 @@ export const normalizeImpl = (just) => (nothing) => (raw) => {
       }
     }
 
-    keysToDelete.forEach((k) => {
-      url.searchParams.delete(k);
-    });
+    for (const key of keysToDelete) {
+      url.searchParams.delete(key);
+    }
 
     url.hash = '';
 

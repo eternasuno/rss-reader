@@ -12,13 +12,9 @@ import Type.Proxy (Proxy(..))
 
 data ArticleSortOption = SortByPubDateDesc | SortByPubDateAsc
 
-instance showArticleSortOption :: Show ArticleSortOption where
-  show SortByPubDateDesc = "pub_date_desc"
-  show SortByPubDateAsc = "pub_date_asc"
-
 type ArticleQuery =
   { read :: Maybe Boolean
-  , start :: Maybe Boolean
+  , starred :: Maybe Boolean
   , sortBy :: ArticleSortOption
   }
 

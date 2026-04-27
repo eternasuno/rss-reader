@@ -1,4 +1,4 @@
-module Usecase.Pure.URLNormalize where
+module Usecase.URLNormalize where
 
 import Prelude
 
@@ -10,4 +10,5 @@ import Port.AppError (AppError(..))
 foreign import normalizeImpl :: (String -> Maybe String) -> (Maybe String) -> String -> Maybe String
 
 normalize :: String -> Either AppError URL
-normalize = map URL <<< note ParseError <<< normalizeImpl Just Nothing
+normalize rawURL =
+  map URL <<< note (ParseError ("Invalid URL: " <> rawURL)) <<< normalizeImpl Just Nothing $ rawURL

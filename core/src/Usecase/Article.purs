@@ -3,8 +3,6 @@ module Usecase.Article where
 import Prelude
 
 import Control.Bind (bindFlipped)
-import Control.Monad.Except (ExceptT(..), runExceptT)
-import Control.Monad.Trans.Class (lift)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Entity.Article (Article, ArticleId)
@@ -14,24 +12,26 @@ import Port.Http (HTTP, fetchHtml)
 import Port.Repository as Repository
 import Port.Time (TIME, now)
 import Run (Run)
-import Usecase.Pure.HTMLParse (extractHTML)
-import Usecase.Pure.Identify (deriveArticleId)
-import Usecase.Pure.URLNormalize (normalize)
+import Run.Except (rethrow, runExcept)
+import Type.Row (type (+))
+import Usecase.HTMLExtract (extractHTML)
+import Usecase.Identify (deriveArticleId)
+import Usecase.URLNormalize (normalize)
 
 vaildateArticleExist :: forall r. ArticleId -> Run (Repository.REPOSITORY r) (Either AppError Unit)
 vaildateArticleExist id = do
   article <- Repository.getArticle id
   pure case article of
-    Just _ -> Left ExistError
+    Just _ -> Left (ExistError id)
     Nothing -> Right unit
 
-subscribeArticle :: forall r. ExtractionStrategy -> String -> Run (Repository.REPOSITORY (HTTP (TIME r))) (Either AppError Article)
-subscribeArticle strategy rawURL = runExceptT do
-  url <- ExceptT (pure (normalize rawURL))
+subscribeArticle :: forall r. ExtractionStrategy -> String -> Run (Repository.REPOSITORY + HTTP + TIME + r) (Either AppError Article)
+subscribeArticle strategy rawURL = runExcept do
+  url <- rethrow (normalize rawURL)
   let id = deriveArticleId url
-  ExceptT (vaildateArticleExist id)
-  payload <- ExceptT (fetchHtml url <#> bindFlipped (extractHTML strategy))
-  currentTime <- lift now
+  rethrow =<< vaildateArticleExist id
+  payload <- rethrow =<< bindFlipped (extractHTML strategy) <$> fetchHtml url
+  currentTime <- now
   let
     article =
       { id: id
@@ -41,11 +41,11 @@ subscribeArticle strategy rawURL = runExceptT do
       , savedAt: currentTime
       , extractionStrategy: strategy
       }
-  ExceptT (Repository.saveArticles [ article ])
+  rethrow =<< Repository.saveArticles [ article ]
   pure article
 
 getUnreadArticles :: forall r. Run (Repository.REPOSITORY r) (Array Article)
-getUnreadArticles = Repository.queryArticles { read: Just false, start: Nothing, sortBy: Repository.SortByPubDateDesc }
+getUnreadArticles = Repository.queryArticles { read: Just false, starred: Nothing, sortBy: Repository.SortByPubDateDesc }
 
 markArticleRead ∷ forall r. ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
 markArticleRead = Repository.updateArticleRead true

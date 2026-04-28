@@ -20,14 +20,15 @@
           "dependencies": [
             "spec",
             "spec-discovery",
-            "spec-node"
+            "spec-node",
+            "spec-quickcheck"
           ]
         }
       }
     },
     "package_set": {
       "address": {
-        "registry": "75.8.0"
+        "registry": "76.1.1"
       },
       "compiler": ">=0.15.15 <0.16.0",
       "content": {
@@ -250,7 +251,7 @@
         "hylograph-wasm-kernel": "0.1.0",
         "hyrule": "2.3.8",
         "i18next": "0.1.0",
-        "idb": "0.1.0",
+        "idb": "0.2.0",
         "identity": "6.0.0",
         "identy": "4.0.1",
         "indexed-db": "1.0.0",
@@ -434,7 +435,7 @@
         "react-basic-dom": "7.0.0",
         "react-basic-dom-beta": "0.1.1",
         "react-basic-emotion": "7.1.0",
-        "react-basic-hooks": "9.0.0",
+        "react-basic-hooks": "9.1.1",
         "react-basic-storybook": "2.0.0",
         "react-dnd-kit": "0.6.0",
         "react-dom": "8.0.0",
@@ -504,7 +505,7 @@
         "string-parsers": "8.0.0",
         "strings": "6.0.1",
         "strings-extra": "4.0.0",
-        "stringutils": "0.0.12",
+        "stringutils": "0.0.13",
         "structured-logging": "1.0.0",
         "substitute": "0.2.3",
         "supply": "0.2.0",
@@ -512,7 +513,7 @@
         "systemd-journald": "0.3.0",
         "tagged": "4.0.2",
         "tailrec": "6.1.0",
-        "tanstack-query": "2.0.1",
+        "tanstack-query": "3.0.0",
         "tecton": "0.2.1",
         "tecton-halogen": "0.2.0",
         "temporal": "0.1.0",
@@ -654,7 +655,7 @@
         "yoga-redis": "0.1.0",
         "yoga-shadcn": "1.0.5",
         "yoga-sql-types": "0.1.0",
-        "yoga-sqlite": "0.3.0",
+        "yoga-sqlite": "0.3.2",
         "yoga-sse": "0.1.1",
         "yoga-subtlecrypto": "0.1.0",
         "yoga-test-docker": "0.1.2",
@@ -1190,6 +1191,20 @@
         "prelude"
       ]
     },
+    "lcg": {
+      "type": "registry",
+      "version": "4.0.0",
+      "integrity": "sha256-bUYyfXYmjTn7zSpj2hTiePywzsuD80fCjkonsrpdGOw=",
+      "dependencies": [
+        "effect",
+        "integers",
+        "maybe",
+        "numbers",
+        "partial",
+        "prelude",
+        "random"
+      ]
+    },
     "lists": {
       "type": "registry",
       "version": "7.0.0",
@@ -1546,6 +1561,49 @@
         "tuples"
       ]
     },
+    "quickcheck": {
+      "type": "registry",
+      "version": "8.0.1",
+      "integrity": "sha256-SfW+maesCt0jnnFhfrgJZGPcWLj8oFcGbcDIVklmdzc=",
+      "dependencies": [
+        "arrays",
+        "console",
+        "control",
+        "effect",
+        "either",
+        "enums",
+        "exceptions",
+        "foldable-traversable",
+        "gen",
+        "identity",
+        "integers",
+        "lazy",
+        "lcg",
+        "lists",
+        "maybe",
+        "newtype",
+        "nonempty",
+        "numbers",
+        "partial",
+        "prelude",
+        "record",
+        "st",
+        "strings",
+        "tailrec",
+        "transformers",
+        "tuples"
+      ]
+    },
+    "random": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-7sZRo6P9UIiXDZ9s2QL9T8h3wlIwLdQrR4+oZKOijQw=",
+      "dependencies": [
+        "effect",
+        "integers",
+        "prelude"
+      ]
+    },
     "record": {
       "type": "registry",
       "version": "4.0.0",
@@ -1671,6 +1729,22 @@
         "prelude",
         "spec",
         "strings",
+        "tuples"
+      ]
+    },
+    "spec-quickcheck": {
+      "type": "registry",
+      "version": "5.0.2",
+      "integrity": "sha256-pmnLu9e9Yk+Yx4hi71XwbyuPS27ya4hjTOKk2KFK/Ns=",
+      "dependencies": [
+        "aff",
+        "arrays",
+        "effect",
+        "foldable-traversable",
+        "lists",
+        "maybe",
+        "prelude",
+        "quickcheck",
         "tuples"
       ]
     },

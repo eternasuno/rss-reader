@@ -16,7 +16,7 @@ import Effect.Exception (message)
 import Entity.Article (Article, ArticleId)
 import Port.AppError (AppError(..))
 import Port.Repository (ArticleQuery, RepositoryF(..))
-import Usecase.Codecs (articleCodec, articleQueryCodec)
+import Usecase.Codecs.Article (articleCodec, articleQueryCodec)
 
 foreign import saveArticlesImpl :: Array Json -> Promise Unit
 foreign import removeArticlesImpl :: Array String -> Promise Unit

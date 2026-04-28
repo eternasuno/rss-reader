@@ -1,4 +1,4 @@
-module Usecase.Codecs where
+module Usecase.Codecs.Article where
 
 import Prelude
 
@@ -6,36 +6,14 @@ import Data.Argonaut.Core (jsonNull, isNull)
 import Data.Codec.Argonaut as CA
 import Data.Codec.Argonaut.Record as CAR
 import Data.DateTime (DateTime)
-import Data.DateTime.Instant (fromDateTime, instant, toDateTime, unInstant)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
 import Data.Profunctor (dimap)
-import Data.Time.Duration (Milliseconds(..))
 import Entity.Article (ArticleId(..), ArticlePayload, Article)
 import Entity.ValueObject (CSSSelector, ExtractionStrategy(..), URL(..))
 import Port.Repository (ArticleSortOption(..), ArticleQuery)
-
-toDateTime' :: Number -> Maybe DateTime
-toDateTime' = (map toDateTime) <<< instant <<< Milliseconds
-
-fromDateTime' :: DateTime -> Number
-fromDateTime' dateTime = ms
-  where
-  (Milliseconds ms) = unInstant (fromDateTime dateTime)
-
-foreign import parseDateTimeImpl :: (Number -> Maybe Number) -> Maybe Number -> String -> Maybe Number
-
-parseDateTime :: String -> Maybe DateTime
-parseDateTime str = parseDateTimeImpl Just Nothing str >>= toDateTime'
-
-foreign import formatDateTimeImpl :: Number -> String
-
-formatDateTime :: DateTime -> String
-formatDateTime = formatDateTimeImpl <<< fromDateTime'
-
-dateTimeCodec :: CA.JsonCodec DateTime
-dateTimeCodec = CA.prismaticCodec "DateTime" parseDateTime formatDateTime CA.string
+import Usecase.Codecs.DateTime (dateTimeCodec)
 
 articlePayloadCodec :: CA.JsonCodec ArticlePayload
 articlePayloadCodec = CA.object "ArticlePayload" $ CAR.record

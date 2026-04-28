@@ -16,7 +16,8 @@ package:
       - spec
       - spec-node
       - spec-discovery
+      - spec-quickcheck
 workspace:
   packageSet:
-    registry: 75.8.0
+    registry: 76.1.1
   extraPackages: {}

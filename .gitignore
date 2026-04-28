@@ -154,3 +154,5 @@ generated-docs/
 .turbo
 
 *.db
+
+.spec-results

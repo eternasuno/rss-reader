@@ -1,5 +1,7 @@
 module Entity.Article where
 
+import Prelude
+
 import Data.DateTime (DateTime)
 import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype)
@@ -8,6 +10,9 @@ import Entity.ValueObject (ExtractionStrategy, URL)
 newtype ArticleId = ArticleId String
 
 derive instance newtypeArticleId :: Newtype ArticleId _
+derive instance eqArticleId :: Eq ArticleId
+instance showArticleId :: Show ArticleId where
+  show (ArticleId id) = id
 
 type ArticleState =
   { read :: Boolean

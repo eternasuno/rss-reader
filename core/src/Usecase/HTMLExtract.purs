@@ -1,4 +1,8 @@
-module Usecase.HTMLExtract where
+module Usecase.HTMLExtract
+  ( extractAuto
+  , extractCSSSelector
+  , extractHTML
+  ) where
 
 import Prelude
 
@@ -9,7 +13,7 @@ import Data.Either (Either)
 import Entity.Article (ArticlePayload)
 import Entity.ValueObject (CSSSelector, ExtractionStrategy(..))
 import Port.AppError (AppError(..))
-import Usecase.Codecs (articlePayloadCodec, cssSelectorCodec)
+import Usecase.Codecs.Article (articlePayloadCodec, cssSelectorCodec)
 
 mapExtractError ∷ forall f a b. Bifunctor f ⇒ f a b → f AppError b
 mapExtractError = lmap (const (ExtractError "failed to extract article from HTML"))

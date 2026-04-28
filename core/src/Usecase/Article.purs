@@ -1,4 +1,12 @@
-module Usecase.Article where
+module Usecase.Article
+  ( getUnreadArticles
+  , markArticleRead
+  , markArticleStarred
+  , markArticleUnread
+  , markArticleUnstarred
+  , removeArticles
+  , subscribeArticle
+  ) where
 
 import Prelude
 

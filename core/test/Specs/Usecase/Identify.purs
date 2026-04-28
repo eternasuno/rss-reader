@@ -10,7 +10,7 @@ import Usecase.Identify (deriveArticleId)
 
 spec :: Spec Unit
 spec = describe "Test Usecase Identify" do
-  describe "Test deriveArticleId" do
+  describe "deriveArticleId" do
     it "should generate same ArticleId for same URL" $ quickCheck \url ->
       deriveArticleId (URL url) === deriveArticleId (URL url)
 

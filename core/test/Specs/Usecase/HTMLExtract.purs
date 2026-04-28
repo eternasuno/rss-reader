@@ -18,7 +18,7 @@ extractErrorMessage result = case result of
 
 spec :: Spec Unit
 spec = describe "Test Usecase HTMLExtract" do
-  describe "Test extractAuto" do
+  describe "extractAuto" do
     it "should extract payload from valid HTML" do
       case extractAuto validHTMLForAuto of
         Left _ -> fail "extractAuto should succeed for valid HTML"
@@ -29,7 +29,7 @@ spec = describe "Test Usecase HTMLExtract" do
       let result = extractAuto ""
       extractErrorMessage result `shouldEqual` Just "failed to extract article from HTML"
 
-  describe "Test extractCSSSelector" do
+  describe "extractCSSSelector" do
     it "should extract payload by CSS selectors" do
       case extractCSSSelector validSelector validHTMLForCSSSelector of
         Left _ -> fail "extractCSSSelector should succeed for valid selectors"
@@ -49,7 +49,7 @@ spec = describe "Test Usecase HTMLExtract" do
       let result = extractCSSSelector selector validHTMLForCSSSelector
       extractErrorMessage result `shouldEqual` Just "failed to extract article from HTML"
 
-  describe "Test extractHTML" do
+  describe "extractHTML" do
     it "should use extractAuto for AutoDetect strategy" do
       let resultFromStrategy = extractHTML AutoDetect validHTMLForAuto
       let resultFromDirect = extractAuto validHTMLForAuto

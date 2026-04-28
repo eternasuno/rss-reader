@@ -30,8 +30,10 @@ derive instance functorRepositoryF :: Functor RepositoryF
 
 type REPOSITORY r = (repository :: RepositoryF | r)
 
+repositoryProxy = Proxy :: Proxy "repository"
+
 liftRepo :: forall r a. RepositoryF a -> Run (REPOSITORY r) a
-liftRepo = Run.lift (Proxy :: Proxy "repository")
+liftRepo = Run.lift repositoryProxy
 
 saveArticles :: forall r. Array Article -> Run (REPOSITORY r) (Either AppError Unit)
 saveArticles articles = liftRepo (SaveArticles articles identity)

@@ -13,8 +13,10 @@ derive instance functorTimeF :: Functor TimeF
 
 type TIME r = (time :: TimeF | r)
 
+timeProxy = Proxy :: Proxy "time"
+
 liftTime :: forall r a. TimeF a -> Run (TIME r) a
-liftTime = Run.lift (Proxy :: Proxy "time")
+liftTime = Run.lift timeProxy
 
 now :: forall r. Run (TIME r) DateTime
 now = liftTime (Now identity)

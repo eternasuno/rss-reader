@@ -15,8 +15,10 @@ derive instance functorHttpF :: Functor HttpF
 
 type HTTP r = (http :: HttpF | r)
 
+httpProxy = Proxy :: Proxy "http"
+
 liftHttp :: forall r a. HttpF a -> Run (HTTP r) a
-liftHttp = Run.lift (Proxy :: Proxy "http")
+liftHttp = Run.lift httpProxy
 
 fetchHtml :: forall r. URL -> Run (HTTP r) (Either AppError String)
 fetchHtml url = liftHttp (FetchHtml url identity)

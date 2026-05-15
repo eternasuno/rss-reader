@@ -13,7 +13,7 @@ import Test.QuickCheck.Gen (Gen, arrayOf1, elements)
 import Test.Spec (Spec, describe, it)
 import Test.Spec.Assertions (fail, shouldEqual)
 import Test.Spec.QuickCheck (quickCheck)
-import Usecase.URLNormalize (normalize)
+import Usecase.URLNormalize (normalizeURL)
 
 trackingKeys :: NEA.NonEmptyArray String
 trackingKeys = NEA.cons' "utm_source"
@@ -50,14 +50,13 @@ spec = describe "Test Usecase URLNormalize" do
     it "should remove multiple tracking parameters" $ quickCheck do
       params <- genTrackingParams
       let rawURL = "https://example.com/article?id=42&" <> params <> "#section"
-      pure case normalize rawURL of
+      pure case normalizeURL rawURL of
         Left _ -> false <?> "normalize should succeed for generated valid URL"
         Right (URL normalizedURL) -> normalizedURL === "https://example.com/article?id=42"
 
     it "should return ParseError for invalid URL" do
       let rawURL = "not a url"
-      case normalize rawURL of
-        Left (ParseError message) ->
-          message `shouldEqual` "Invalid URL: not a url"
+      case normalizeURL rawURL of
+        Left (ParseError message) -> message `shouldEqual` "Invalid URL: not a url"
         Left _ -> fail "normalize should return ParseError for invalid URL"
         Right _ -> fail "normalize should fail for invalid URL"

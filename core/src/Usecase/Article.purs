@@ -1,71 +1,42 @@
-module Usecase.Article
-  ( getUnreadArticles
-  , markArticleRead
-  , markArticleStarred
-  , markArticleUnread
-  , markArticleUnstarred
-  , removeArticles
-  , subscribeArticle
+module Usecase.SaveArticle
+  ( subscribeArticle
   ) where
 
 import Prelude
 
-import Control.Bind (bindFlipped)
-import Data.Either (Either(..))
+import Data.Either (Either)
 import Data.Maybe (Maybe(..))
-import Entity.Article (Article, ArticleId)
-import Entity.ValueObject (ExtractionStrategy)
+import Entity.Article (ArticleId)
 import Port.AppError (AppError(..))
-import Port.Http (HTTP, fetchHtml)
+import Port.Extractor as Extractor
+import Port.Http as HTTP
 import Port.Repository as Repository
-import Port.Time (TIME, now)
-import Run (Run)
-import Run.Except (rethrow, runExcept)
+import Run (AFF, Run)
+import Run.Except (EXCEPT, rethrow, runExcept, throw)
 import Type.Row (type (+))
-import Usecase.HTMLExtract (extractHTML)
-import Usecase.Identify (deriveArticleId)
-import Usecase.URLNormalize (normalize)
+import Usecase.Identify (generateArticleId)
+import Usecase.URLNormalize (normalizeURL)
 
-vaildateArticleExist :: forall r. ArticleId -> Run (Repository.REPOSITORY r) (Either AppError Unit)
-vaildateArticleExist id = do
-  article <- Repository.getArticle id
-  pure case article of
-    Just _ -> Left (ExistError id)
-    Nothing -> Right unit
+validateArticleExist :: forall r. ArticleId -> Run (Repository.REPOSITORY + EXCEPT AppError + r) Unit
+validateArticleExist id = do
+  articleMaybe <- rethrow =<< Repository.findArticle id
+  case articleMaybe of
+    Just _ -> throw (ExistError id)
+    Nothing -> pure unit
 
-subscribeArticle :: forall r. ExtractionStrategy -> String -> Run (Repository.REPOSITORY + HTTP + TIME + r) (Either AppError Article)
-subscribeArticle strategy rawURL = runExcept do
-  url <- rethrow (normalize rawURL)
-  let id = deriveArticleId url
-  rethrow =<< vaildateArticleExist id
-  payload <- rethrow =<< bindFlipped (extractHTML strategy) <$> fetchHtml url
-  currentTime <- now
+subscribeArticle ∷ forall r. String → Run (Repository.REPOSITORY + Extractor.EXTRACTOR + HTTP.HTTP + AFF + r) (Either AppError Unit)
+subscribeArticle rawURL = runExcept do
+  url <- rethrow (normalizeURL rawURL)
+  id <- generateArticleId url
+  validateArticleExist id
+
+  html <- rethrow =<< HTTP.fetchHtml url
+  payload <- rethrow =<< Extractor.extract html
   let
     article =
       { id: id
       , url: url
       , payload: payload
       , state: { read: false, starred: true }
-      , savedAt: currentTime
-      , extractionStrategy: strategy
       }
   rethrow =<< Repository.saveArticles [ article ]
-  pure article
-
-getUnreadArticles :: forall r. Run (Repository.REPOSITORY r) (Array Article)
-getUnreadArticles = Repository.queryArticles { read: Just false, starred: Nothing, sortBy: Repository.SortByPubDateDesc }
-
-markArticleRead ∷ forall r. ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
-markArticleRead = Repository.updateArticleRead true
-
-markArticleUnread ∷ forall r. ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
-markArticleUnread = Repository.updateArticleRead false
-
-markArticleStarred ∷ forall r. ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
-markArticleStarred = Repository.updateArticleStarred true
-
-markArticleUnstarred ∷ forall r. ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
-markArticleUnstarred = Repository.updateArticleStarred false
-
-removeArticles ∷ forall r. Array ArticleId → Run (Repository.REPOSITORY r) (Either AppError Unit)
-removeArticles = Repository.removeArticles

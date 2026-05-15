@@ -1,12 +1,22 @@
 module Port.AppError where
 
+import Prelude
+
 import Entity.Article (ArticleId)
 import Entity.ValueObject (URL)
 
 data AppError
-  = NetworkError URL String
+  = HTTPError URL String
   | ParseError String
   | NotFound String
-  | ExtractError String
+  | ExtractorError String
   | ExistError ArticleId
   | RepositoryError String
+
+instance showAppError :: Show AppError where
+  show (HTTPError url err) = "HTTP error for URL " <> show url <> ": " <> err
+  show (ParseError err) = "Parse error: " <> err
+  show (NotFound entity) = "Not found: " <> entity
+  show (ExtractorError err) = "Extractor error: " <> err
+  show (ExistError articleId) = "Article already exists with ID: " <> show articleId
+  show (RepositoryError err) = "Repository error: " <> err

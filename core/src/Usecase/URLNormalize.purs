@@ -1,5 +1,5 @@
 module Usecase.URLNormalize
-  ( normalize
+  ( normalizeURL
   ) where
 
 import Prelude
@@ -9,8 +9,8 @@ import Data.Maybe (Maybe(..))
 import Entity.ValueObject (URL(..))
 import Port.AppError (AppError(..))
 
-foreign import normalizeImpl :: (String -> Maybe String) -> (Maybe String) -> String -> Maybe String
+foreign import normalizeURLImpl :: (String -> Maybe String) -> (Maybe String) -> String -> Maybe String
 
-normalize :: String -> Either AppError URL
-normalize rawURL =
-  note (ParseError ("Invalid URL: " <> rawURL)) $ URL <$> normalizeImpl Just Nothing rawURL
+normalizeURL :: String -> Either AppError URL
+normalizeURL rawURL =
+  note (ParseError ("Invalid URL: " <> rawURL)) (URL <$> normalizeURLImpl Just Nothing rawURL)

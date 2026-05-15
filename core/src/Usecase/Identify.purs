@@ -1,11 +1,21 @@
 module Usecase.Identify
-  ( deriveArticleId
+  ( generateArticleId
+  , sha256Hex
   ) where
 
+import Prelude
+
+import Control.Promise (Promise, toAff)
+import Effect.Aff (Aff)
 import Entity.Article (ArticleId(..))
 import Entity.ValueObject (URL(..))
+import Run (AFF, Run, liftAff)
+import Type.Row (type (+))
 
-foreign import sha256HexImpl :: String -> String
+foreign import sha256HexImpl :: String -> Promise String
 
-deriveArticleId :: URL -> ArticleId
-deriveArticleId (URL url) = ArticleId (sha256HexImpl url)
+sha256Hex :: String -> Aff String
+sha256Hex = toAff <<< sha256HexImpl
+
+generateArticleId :: forall r. URL -> Run (AFF + r) ArticleId
+generateArticleId (URL url) = liftAff (ArticleId <$> sha256Hex url)

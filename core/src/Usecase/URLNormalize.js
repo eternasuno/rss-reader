@@ -17,7 +17,7 @@ const TRACKING_PARAMS = new Set([
   'smid',
 ]);
 
-export const normalizeImpl = (just) => (nothing) => (raw) => {
+export const normalizeURLImpl = (just) => (nothing) => (raw) => {
   try {
     const url = new URL(raw.trim());
 

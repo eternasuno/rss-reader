@@ -10,21 +10,26 @@ import Run (Run)
 import Run as Run
 import Type.Proxy (Proxy(..))
 
-data ArticleSortOption = SortByPubDateDesc | SortByPubDateAsc
+foreign import data ObservableArticles :: Type
+
+type ArticlePatch =
+  { state ::
+      { read :: Maybe Boolean
+      , starred :: Maybe Boolean
+      }
+  }
 
 type ArticleQuery =
-  { read :: Maybe Boolean
-  , starred :: Maybe Boolean
-  , sortBy :: ArticleSortOption
+  { onlyUnread :: Boolean
+  , sortPubDateDesc :: Boolean
   }
 
 data RepositoryF a
   = SaveArticles (Array Article) (Either AppError Unit -> a)
   | RemoveArticles (Array ArticleId) (Either AppError Unit -> a)
-  | UpdateArticleStarred Boolean ArticleId (Either AppError Unit -> a)
-  | UpdateArticleRead Boolean ArticleId (Either AppError Unit -> a)
-  | GetArticle ArticleId (Maybe Article -> a)
-  | QueryArticles ArticleQuery (Array Article -> a)
+  | PatchArticles (Array ArticleId) ArticlePatch (Either AppError Unit -> a)
+  | FindArticle ArticleId (Either AppError (Maybe Article) -> a)
+  | ObserveArticles ArticleQuery (Either AppError ObservableArticles -> a)
 
 derive instance functorRepositoryF :: Functor RepositoryF
 
@@ -41,16 +46,11 @@ saveArticles articles = liftRepo (SaveArticles articles identity)
 removeArticles :: forall r. Array ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
 removeArticles articleIds = liftRepo (RemoveArticles articleIds identity)
 
-updateArticleStarred :: forall r. Boolean -> ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
-updateArticleStarred starred articleId =
-  liftRepo (UpdateArticleStarred starred articleId identity)
+patchArticles :: forall r. (Array ArticleId) -> ArticlePatch -> Run (REPOSITORY r) (Either AppError Unit)
+patchArticles ids patch = liftRepo (PatchArticles ids patch identity)
 
-updateArticleRead :: forall r. Boolean -> ArticleId -> Run (REPOSITORY r) (Either AppError Unit)
-updateArticleRead read articleId =
-  liftRepo (UpdateArticleRead read articleId identity)
+findArticle :: forall r. ArticleId -> Run (REPOSITORY r) (Either AppError (Maybe Article))
+findArticle articleId = liftRepo (FindArticle articleId identity)
 
-getArticle :: forall r. ArticleId -> Run (REPOSITORY r) (Maybe Article)
-getArticle articleId = liftRepo (GetArticle articleId identity)
-
-queryArticles :: forall r. ArticleQuery -> Run (REPOSITORY r) (Array Article)
-queryArticles articleQuery = liftRepo (QueryArticles articleQuery identity)
+observeArticles :: forall r. ArticleQuery -> Run (REPOSITORY r) (Either AppError ObservableArticles)
+observeArticles query = liftRepo (ObserveArticles query identity)

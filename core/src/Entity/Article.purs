@@ -2,10 +2,10 @@ module Entity.Article where
 
 import Prelude
 
-import Data.DateTime (DateTime)
+import Data.DateTime.Instant (Instant)
 import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype)
-import Entity.ValueObject (ExtractionStrategy, URL)
+import Entity.ValueObject (URL)
 
 newtype ArticleId = ArticleId String
 
@@ -22,15 +22,13 @@ type ArticleState =
 type ArticlePayload =
   { content :: Maybe String
   , description :: Maybe String
-  , pubDate :: DateTime
+  , pubDate :: Instant
   , title :: String
   }
 
 type Article =
-  { extractionStrategy :: ExtractionStrategy
-  , id :: ArticleId
+  { id :: ArticleId
   , payload :: ArticlePayload
-  , savedAt :: DateTime
   , state :: ArticleState
   , url :: URL
   }

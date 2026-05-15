@@ -7,9 +7,9 @@
           "dependencies": [
             "aff-promise",
             "argonaut",
-            "codec-argonaut",
             "console",
             "datetime",
+            "debug",
             "effect",
             "prelude",
             "run",
@@ -28,7 +28,7 @@
     },
     "package_set": {
       "address": {
-        "registry": "76.1.1"
+        "registry": "77.0.0"
       },
       "compiler": ">=0.15.15 <0.16.0",
       "content": {
@@ -66,7 +66,7 @@
         "assert-multiple": "0.4.0",
         "avar": "5.0.1",
         "axon": "0.0.3",
-        "b64": "0.0.8",
+        "b64": "0.0.9",
         "barbies": "1.0.1",
         "barlow-lens": "0.9.0",
         "benchlib": "0.0.4",
@@ -146,7 +146,7 @@
         "elmish-testing-library": "0.3.2",
         "elmish-time-machine": "0.4.2",
         "email-validate": "7.0.0",
-        "encoding": "0.0.9",
+        "encoding": "0.0.10",
         "enums": "6.0.1",
         "env-names": "0.4.0",
         "environment": "2.0.0",
@@ -277,7 +277,7 @@
         "js-maps": "0.1.2",
         "js-promise": "1.0.0",
         "js-promise-aff": "1.0.0",
-        "js-temporal": "2.1.0",
+        "js-temporal": "3.0.0",
         "js-timers": "6.1.0",
         "js-uri": "3.1.0",
         "jsdom": "1.0.0",
@@ -508,6 +508,7 @@
         "stringutils": "0.0.13",
         "structured-logging": "1.0.0",
         "substitute": "0.2.3",
+        "supabase": "0.1.0",
         "supply": "0.2.0",
         "svg-parser": "3.0.0",
         "systemd-journald": "0.3.0",
@@ -858,47 +859,6 @@
         "unfoldable"
       ]
     },
-    "codec": {
-      "type": "registry",
-      "version": "6.1.0",
-      "integrity": "sha256-WzfYiZsnqHJ/K4IliEEOkLLmsKozy8c7/fbrGZHASOk=",
-      "dependencies": [
-        "bifunctors",
-        "control",
-        "invariant",
-        "prelude",
-        "profunctor",
-        "tuples"
-      ]
-    },
-    "codec-argonaut": {
-      "type": "registry",
-      "version": "10.0.0",
-      "integrity": "sha256-P6ha7D2ZaTZ+GFsm4v4lg1BgIT3XVTpU1tEGMjDDIR8=",
-      "dependencies": [
-        "argonaut-core",
-        "arrays",
-        "bifunctors",
-        "codec",
-        "control",
-        "either",
-        "foldable-traversable",
-        "foreign-object",
-        "integers",
-        "lists",
-        "maybe",
-        "ordered-collections",
-        "prelude",
-        "profunctor",
-        "record",
-        "safe-coerce",
-        "strings",
-        "tuples",
-        "type-equality",
-        "unsafe-coerce",
-        "variant"
-      ]
-    },
     "console": {
       "type": "registry",
       "version": "6.1.0",
@@ -960,6 +920,15 @@
         "partial",
         "prelude",
         "tuples"
+      ]
+    },
+    "debug": {
+      "type": "registry",
+      "version": "6.0.2",
+      "integrity": "sha256-d/EzRm/J2JyzvlIeo2Ex78Y7HRB0IXBitnVJywL4gHk=",
+      "dependencies": [
+        "functions",
+        "prelude"
       ]
     },
     "distributive": {

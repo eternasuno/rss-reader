@@ -2,6 +2,7 @@ module Port.AppError where
 
 import Prelude
 
+import Data.Argonaut (class EncodeJson, encodeJson)
 import Entity.Article (ArticleId)
 import Entity.ValueObject (URL)
 
@@ -20,3 +21,6 @@ instance showAppError :: Show AppError where
   show (ExtractorError err) = "Extractor error: " <> err
   show (ExistError articleId) = "Article already exists with ID: " <> show articleId
   show (RepositoryError err) = "Repository error: " <> err
+
+instance encodeJsonAppError :: EncodeJson AppError where
+  encodeJson = encodeJson <<< show

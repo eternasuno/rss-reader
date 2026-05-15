@@ -1,4 +1,4 @@
-module Usecase.SaveArticle
+module Usecase.Article
   ( subscribeArticle
   ) where
 

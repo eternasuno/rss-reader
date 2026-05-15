@@ -2,11 +2,9 @@ module Adapter.Extractor.Readability where
 
 import Prelude
 
-import Adapter.Codec (articlePayloadCodec)
 import Control.Monad.Error.Class (try)
-import Data.Argonaut (Json)
+import Data.Argonaut (Json, decodeJson)
 import Data.Bifunctor (lmap)
-import Data.Codec.Argonaut as CA
 import Data.Either (Either)
 import Effect (Effect)
 import Effect.Exception (message)
@@ -20,6 +18,6 @@ foreign import parseImpl :: Document -> Effect Json
 parse ∷ Document → Effect (Either AppError ArticlePayload)
 parse document = mapError <$> try do
   json <- parseImpl document
-  pure (CA.decode articlePayloadCodec json)
+  pure (decodeJson json)
   where
   mapError result = (lmap (\_ -> ParseError "Failed to parse article payload")) =<< (lmap (ExtractorError <<< message) result)

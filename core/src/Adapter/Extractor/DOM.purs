@@ -1,5 +1,6 @@
 module Adapter.Extractor.DOM
   ( handleExtract
+  , extract
   ) where
 
 import Prelude

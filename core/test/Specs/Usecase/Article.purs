@@ -11,7 +11,7 @@ import Test.Mock.Data (mockPayload)
 import Test.Mock.Adapter (defaultTestEnvironmentConfig, runUsecaseWithTestEnvironment)
 import Test.Spec (Spec, describe, it)
 import Test.Spec.Assertions (fail)
-import Usecase.SaveArticle (subscribeArticle)
+import Usecase.Article (subscribeArticle)
 
 spec :: Spec Unit
 spec = describe "Test Usecase Article" do

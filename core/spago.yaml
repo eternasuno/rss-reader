@@ -3,9 +3,9 @@ package:
   dependencies:
     - aff-promise
     - argonaut
-    - codec-argonaut
     - console
     - datetime
+    - debug
     - effect
     - prelude
     - run

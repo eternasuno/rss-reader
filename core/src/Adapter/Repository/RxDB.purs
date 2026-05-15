@@ -2,11 +2,9 @@ module Adapter.Repository.RxDB where
 
 import Prelude
 
-import Adapter.Codec (articleCodec, articlePatchCodec)
 import Control.Promise (Promise, toAffE)
-import Data.Argonaut (Json)
+import Data.Argonaut (Json, decodeJson, encodeJson)
 import Data.Bifunctor (lmap)
-import Data.Codec.Argonaut as CA
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.Nullable (Nullable, toMaybe)
@@ -24,7 +22,7 @@ toAffE' ep = lmap (RepositoryError <<< message) <$> attempt (toAffE ep)
 foreign import saveArticlesImpl :: Array Json -> Effect (Promise Unit)
 
 saveArticles :: Array Article -> Aff (Either AppError Unit)
-saveArticles = toAffE' <<< saveArticlesImpl <<< map (CA.encode articleCodec)
+saveArticles = toAffE' <<< saveArticlesImpl <<< map encodeJson
 
 foreign import removeArticlesImpl :: Array ArticleId -> Effect (Promise Unit)
 
@@ -34,7 +32,7 @@ removeArticles = toAffE' <<< removeArticlesImpl
 foreign import patchArticlesImpl :: Array ArticleId -> Json -> Effect (Promise Unit)
 
 patchArticles :: Array ArticleId -> ArticlePatch -> Aff (Either AppError Unit)
-patchArticles articleIds = toAffE' <<< patchArticlesImpl articleIds <<< CA.encode articlePatchCodec
+patchArticles articleIds = toAffE' <<< patchArticlesImpl articleIds <<< encodeJson
 
 foreign import findArticleImpl :: ArticleId -> Effect (Promise (Nullable Json))
 
@@ -43,7 +41,7 @@ findArticle id = do
   result <- toAffE' (findArticleImpl id)
   pure $ result >>= \nullableJson -> case toMaybe nullableJson of
     Nothing -> Right Nothing
-    Just json -> case CA.decode articleCodec json of
+    Just json -> case decodeJson json of
       Left _ -> Left (RepositoryError "Failed to decode article JSON")
       Right article -> Right (Just article)
 

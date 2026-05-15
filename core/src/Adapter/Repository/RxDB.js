@@ -15,7 +15,7 @@ export const removeArticlesImpl = (ids) => async () => {
 export const patchArticlesImpl = (ids) => (patch) => async () => {
   const db = await getDB();
 
-  await db.articles.find({ selector: { id: { $in: ids } } }).patch({ $set: patch });
+  await db.articles.find({ selector: { id: { $in: ids } } }).patch(patch);
 };
 
 export const findArticleImpl = (id) => async () => {

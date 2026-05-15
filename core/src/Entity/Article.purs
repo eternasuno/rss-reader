@@ -2,17 +2,18 @@ module Entity.Article where
 
 import Prelude
 
-import Data.DateTime.Instant (Instant)
+import Data.Argonaut (class DecodeJson, class EncodeJson)
 import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype)
-import Entity.ValueObject (URL)
+import Entity.ValueObject (Timestamp, URL)
 
 newtype ArticleId = ArticleId String
 
 derive instance newtypeArticleId :: Newtype ArticleId _
 derive instance eqArticleId :: Eq ArticleId
-instance showArticleId :: Show ArticleId where
-  show (ArticleId id) = id
+derive newtype instance showArticleId :: Show ArticleId
+derive newtype instance encodeJsonArticleId :: EncodeJson ArticleId
+derive newtype instance decodeJsonArticleId :: DecodeJson ArticleId
 
 type ArticleState =
   { read :: Boolean
@@ -22,7 +23,7 @@ type ArticleState =
 type ArticlePayload =
   { content :: Maybe String
   , description :: Maybe String
-  , pubDate :: Instant
+  , pubDate :: Timestamp
   , title :: String
   }
 
